@@ -10,18 +10,21 @@ class SExpression(object):
         return self._iter()
     def _iter(self):
         yield self.first
-        if self.second is NIL:
-            return
         for x in self.second:
             yield x
 S = SExpression
 
 class NIL(SExpression):
-    def __init__(self):
+    def __init__(self, first=None, second=None):
         self.first = self
         self.second = self
     def __repr__(self):
         return 'NIL'
+    def _iter(self):
+        # the generator that generates nothing
+        return
+        yield
+
 NIL = NIL()  # singleton.
 
 print '%r == %r' % ([1, 2, 3], S(1, S(2, S(3, NIL))))
