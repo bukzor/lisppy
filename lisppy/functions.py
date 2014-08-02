@@ -151,13 +151,16 @@ def sublis(x, y):
             sublis(x, cdr(y)),
         )
 
-assert sublis(
+LHS = sublis(
     S(
-        S(X, S(A, B)),
-        S(Y, S(B, C)),
-    ),
+        S(X, S(S(A, B), NIL)),
+    S(  S(Y, S(S(B, C), NIL)),
+        NIL,
+    )),
     S(A, S(X, Y)),
-) == S(A, S(S(A, B), S(B, C)))
+)
+RHS = S(A, S(S(A, B), S(B, C)))
+assert LHS == RHS, '%r == %r' % (LHS, RHS)
 
 
 print 'tests passed.'

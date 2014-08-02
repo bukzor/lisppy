@@ -1,4 +1,5 @@
 # coding:UTF-8
+from .atom import NIL
 
 class SExpression(object):
     def __init__(self, first, second):
@@ -14,26 +15,19 @@ class SExpression(object):
         return self._iter()
     def _iter(self):
         yield self.first
+        if self.second is NIL:
+            return
         for x in self.second:
             yield x
+    def __eq__(self, other):
+        if not isinstance(other, SExpression):
+            return False
+        return (
+            self.first == other.first and
+            self.second == other.second
+        )
+    def __ne__(self, other):
+        return not (self == other)
 S = SExpression
 
-class NIL(SExpression):
-    def __init__(self, first=None, second=None):
-        self.first = self
-        self.second = self
-    def __unicode__(self):
-        return u'NIL'
-    def _iter(self):
-        # the generator that generates nothing
-        return
-        yield
-
-NIL = NIL()  # singleton.
-
-print '%r == %r' % ([1, 2, 3], S(1, S(2, S(3, NIL))))
-assert [1, 2, 3] == list(S(1, S(2, S(3, NIL))))
-print 'True\n'
-
-# [1, 2, 3] == (1 · (2 · (3 · NIL)))
-# True
+assert [1, 2, 3] == list(S(1, S(2, S(3, NIL)))), '%r == %r' % ([1, 2, 3], S(1, S(2, S(3, NIL))))
