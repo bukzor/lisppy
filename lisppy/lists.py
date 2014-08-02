@@ -5,7 +5,11 @@ class SExpression(object):
         self.first = first
         self.second = second
     def __repr__(self):
-        return '(%r · %r)' % (self.first, self.second)
+        return unicode(self).encode('UTF-8')
+    def __unicode__(self):
+        return u'(%s %s)' % (self.first, self.second)
+        ## pytest can't handle utf-8 repr -.-
+        #return u'(%s · %s)' % (self.first, self.second)
     def __iter__(self):
         return self._iter()
     def _iter(self):
@@ -18,8 +22,8 @@ class NIL(SExpression):
     def __init__(self, first=None, second=None):
         self.first = self
         self.second = self
-    def __repr__(self):
-        return 'NIL'
+    def __unicode__(self):
+        return u'NIL'
     def _iter(self):
         # the generator that generates nothing
         return

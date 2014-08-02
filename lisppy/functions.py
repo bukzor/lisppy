@@ -1,20 +1,33 @@
 # pylint:disable=invalid-name,missing-docstring
-from .lists import SExpression, NIL
+from .lists import SExpression as S, NIL
+from .atom import Atom
+
+A, B, C, X, Y, Z = (
+    Atom('A'), Atom('B'), Atom('C'), Atom('X'), Atom('Y'), Atom('Z'),
+)
+undefined = Atom('undefined')
 
 
 def atom(x):
-    return not isinstance(SExpression, x)
+    return not isinstance(x, S)
 
 
 def eq(x, y):
-    assert atom(x)
-    assert atom(y)
-    return x == y
+    if atom(x) and atom(y):
+        return repr(x) == repr(y)
+    else:
+        return undefined
+
+assert eq(X, X) == True
+assert eq(X, A) == False
+assert eq(X, S(X, A)) == undefined
 
 
 def car(x):
-    assert not atom(x)
-    return x.first
+    if not atom(x):
+        return x.first
+    else:
+        return undefined
 
 
 def cdr(x):
@@ -23,7 +36,7 @@ def cdr(x):
 
 
 def cons(x, y):
-    return SExpression(x, y)
+    return S(x, y)
 
 
 def ff(x):
@@ -41,7 +54,7 @@ def subst(x, y, z):
         else:
             return z
     else:
-        return SExpression(
+        return S(
             subst(x, y, car(z)),
             subst(x, y, cdr(z)),
         )
@@ -71,7 +84,80 @@ def subst2(x, y, z):
         else:
             return z
     else:
-        return SExpression(
+        return S(
             subst2(x, y, car(z)),
             subst2(x, z, cdr(z)),
         )
+
+
+def caar(x):
+    return car(car(x))
+
+
+def cadar(x):
+    return car(cdr(car(x)))
+
+
+def append(x, y):
+    if null(x):
+        return y
+    else:
+        cons(car(x), append(cdr(x), y))
+
+# TODO: assert example
+
+
+def among(x, y):
+    return not null(y) and (
+        equal(x, car(y)) or
+        among(x, cdr(y))
+    )
+
+
+def pair(x, y):
+    if null(x) and null(y):
+        return NIL
+    elif not atom(x) and not atom(y):
+        return cons(
+            cons(car(x), car(y)),
+            pair(cdr(x), cdr(y)),
+        )
+
+# TODO: assert example
+
+def assoc(x, y):
+    if eq(caar(y), x):
+        return cadar(y)
+    else:
+        return assoc(x, cdr(y))
+
+# TODO: assert example
+
+
+def sub2(x, z):
+    if null(x):
+        return z
+    elif eq(caar(x), z):
+        return cadar(x)
+    else:
+        return sub2(cdr(x), z)
+
+def sublis(x, y):
+    if atom(y):
+        return sub2(x, y)
+    else:
+        return cons(
+            sublis(x, car(y)),
+            sublis(x, cdr(y)),
+        )
+
+assert sublis(
+    S(
+        S(X, S(A, B)),
+        S(Y, S(B, C)),
+    ),
+    S(A, S(X, Y)),
+) == S(A, S(S(A, B), S(B, C)))
+
+
+print 'tests passed.'
