@@ -1,4 +1,3 @@
-# pylint:disable=invalid-name,missing-docstring
 from .lists import SExpression as S, NIL
 from .constants import undefined
 
