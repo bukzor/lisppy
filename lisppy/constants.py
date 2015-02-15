@@ -1,9 +1,5 @@
-class const(object):
-    def __init__(self, name):
-        self.name = name
-    def __repr__(self):
-        return name
+from .atom import Atom
 
-T = const('T')
-F = const('F')
-undefined = const('undefined')
+T = Atom('T')
+F = Atom('F')
+undefined = Atom('undefined')

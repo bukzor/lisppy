@@ -1,11 +1,11 @@
 # pylint:disable=invalid-name,missing-docstring
 from .lists import SExpression as S, NIL
 from .atom import Atom
+from .constants import undefined
 
 A, B, C, X, Y, Z = (
     Atom('A'), Atom('B'), Atom('C'), Atom('X'), Atom('Y'), Atom('Z'),
 )
-undefined = Atom('undefined')
 
 
 def atom(x):
@@ -152,9 +152,8 @@ def sublis(x, y):
         )
 
 LHS = sublis(
-    S(
-        S(X, S(S(A, B), NIL)),
-    S(  S(Y, S(S(B, C), NIL)),
+    S(S(X, S(S(A, B), NIL)),
+    S(S(Y, S(S(B, C), NIL)),
         NIL,
     )),
     S(A, S(X, Y)),
