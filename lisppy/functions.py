@@ -1,11 +1,6 @@
 # pylint:disable=invalid-name,missing-docstring
 from .lists import SExpression as S, NIL
-from .atom import Atom
 from .constants import undefined
-
-A, B, C, X, Y, Z = (
-    Atom('A'), Atom('B'), Atom('C'), Atom('X'), Atom('Y'), Atom('Z'),
-)
 
 
 def atom(x):
@@ -17,10 +12,6 @@ def eq(x, y):
         return repr(x) == repr(y)
     else:
         return undefined
-
-assert eq(X, X) == True
-assert eq(X, A) == False
-assert eq(X, S(X, A)) == undefined
 
 
 def car(x):
@@ -125,6 +116,7 @@ def pair(x, y):
 
 # TODO: assert example
 
+
 def assoc(x, y):
     if eq(caar(y), x):
         return cadar(y)
@@ -142,6 +134,7 @@ def sub2(x, z):
     else:
         return sub2(cdr(x), z)
 
+
 def sublis(x, y):
     if atom(y):
         return sub2(x, y)
@@ -150,16 +143,3 @@ def sublis(x, y):
             sublis(x, car(y)),
             sublis(x, cdr(y)),
         )
-
-LHS = sublis(
-    S(S(X, S(S(A, B), NIL)),
-    S(S(Y, S(S(B, C), NIL)),
-        NIL,
-    )),
-    S(A, S(X, Y)),
-)
-RHS = S(A, S(S(A, B), S(B, C)))
-assert LHS == RHS, '%r == %r' % (LHS, RHS)
-
-
-print 'tests passed.'
