@@ -5,7 +5,7 @@ all:
 .PHONY: CI test lint
 CI: lint test
 test:
-	py.test
+	py.test "$(ARGS)"
 lint:
 	git ls-files '*.py' | xargs pylint
 	git ls-files '*.py' | xargs flake8
