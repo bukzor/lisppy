@@ -1,27 +1,37 @@
+from .atom import Atom
 from .lists import SExpression as S, NIL
-from .constants import undefined
+from .constants import undefined, T, F
 
 
 def atom(x):
-    return not isinstance(x, S)
+    """atom[x] has the value of T or F according to whether x is an
+    atomic symbol.
+
+    Thus
+        atom [X] = T
+        atom [(X · A)] = F
+
+    section 3c, page 10
+    """
+    return T if isinstance(x, Atom) else F
 
 
 def eq(x, y):
-    if atom(x) and atom(y):
-        return repr(x) == repr(y)
+    if atom(x) is T and atom(y) is T:
+        return T if repr(x) == repr(y) else F
     else:
         return undefined
 
 
 def car(x):
-    if not atom(x):
+    if atom(x) is F:
         return x.first
     else:
         return undefined
 
 
 def cdr(x):
-    assert not atom(x)
+    assert atom(x) is F
     return x.second
 
 
@@ -30,7 +40,7 @@ def cons(x, y):
 
 
 def ff(x):
-    if atom(x):
+    if atom(x) is T:
         return x
     else:
         return ff(car(x))
@@ -38,8 +48,8 @@ def ff(x):
 
 def subst(x, y, z):
     """return z with all y replaced with x"""
-    if atom(z):
-        if eq(z, y):
+    if atom(z) is T:
+        if eq(z, y) is T:
             return x
         else:
             return z
@@ -68,8 +78,8 @@ def null(x):
 
 
 def subst2(x, y, z):
-    if atom(z):
-        if eq(y, z):
+    if atom(z) is T:
+        if eq(y, z) is T:
             return x
         else:
             return z
@@ -89,7 +99,7 @@ def cadar(x):
 
 
 def append(x, y):
-    if null(x):
+    if null(x) is T:
         return y
     else:
         cons(car(x), append(cdr(x), y))
@@ -105,9 +115,9 @@ def among(x, y):
 
 
 def pair(x, y):
-    if null(x) and null(y):
+    if null(x) is T and null(y) is T:
         return NIL
-    elif not atom(x) and not atom(y):
+    elif atom(x) is F and atom(y) is F:
         return cons(
             cons(car(x), car(y)),
             pair(cdr(x), cdr(y)),
@@ -117,7 +127,7 @@ def pair(x, y):
 
 
 def assoc(x, y):
-    if eq(caar(y), x):
+    if eq(caar(y), x) is T:
         return cadar(y)
     else:
         return assoc(x, cdr(y))
@@ -126,16 +136,16 @@ def assoc(x, y):
 
 
 def sub2(x, z):
-    if null(x):
+    if null(x) is T:
         return z
-    elif eq(caar(x), z):
+    elif eq(caar(x), z) is T:
         return cadar(x)
     else:
         return sub2(cdr(x), z)
 
 
 def sublis(x, y):
-    if atom(y):
+    if atom(y) is T:
         return sub2(x, y)
     else:
         return cons(
