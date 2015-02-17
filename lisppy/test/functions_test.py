@@ -1,6 +1,6 @@
 from lisppy.atom import Atom
-from lisppy.lists import S, NIL
-from lisppy.constants import undefined
+from lisppy.lists import S
+from lisppy.constants import undefined, NIL
 from lisppy.functions import (
     eq, sublis
 )
