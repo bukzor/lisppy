@@ -1,5 +1,12 @@
 [MESSAGES CONTROL]
-disable=locally-disabled,file-ignored,missing-docstring,fixme,star-args
+disable=
+    locally-disabled,
+    file-ignored,
+    missing-docstring,
+    fixme,
+    star-args,
+    redefined-outer-name,
+
 
 [REPORTS]
 output-format=colorized

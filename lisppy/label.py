@@ -1,6 +1,14 @@
 # demo of the label function
 # TODO: make it work, test it.
-# flake8: noqa, pylint: skip-file
+
+
+def label(label, fn):
+    del label, fn
+
+
+def factorial(n):
+    del n
+
 
 label(
     'factorial',

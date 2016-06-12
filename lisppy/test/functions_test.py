@@ -2,7 +2,7 @@ from lisppy.atom import Atom
 from lisppy.lists import S
 from lisppy.constants import undefined, NIL, T, F
 from lisppy.functions import(
-    atom, eq, car, cdr, cons, ff, subst, equal, null, sublis,
+    atom, eq, car, cdr, cons, ff, subst, equal, null, _list, append, sublis,
 )
 
 A, B, C, X, Y = (
@@ -79,6 +79,19 @@ def test_null():
     assert null(NIL) is T
     assert null(X) is F
     assert null(S(X, Y)) is F
+
+
+def test__list():
+    """page 14"""
+    assert _list(A, B, C) == cons(A, cons(B, cons(C, NIL)))
+    assert _list(A) == cons(A, NIL)
+    assert _list() is NIL
+
+
+def test_append():
+    """section 3d1(again), page 14"""
+    assert append(_list(A, B), _list(C, X, Y)) == _list(A, B, C, X, Y)
+    assert append(NIL, X) is X
 
 
 def test_sublis():

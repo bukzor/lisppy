@@ -138,6 +138,7 @@ def null(x):
 
 
 def subst2(x, y, z):
+    """???"""
     if atom(z) is T:
         if eq(y, z) is T:
             return x
@@ -151,23 +152,37 @@ def subst2(x, y, z):
 
 
 def caar(x):
+    """page 14"""
     return car(car(x))
 
 
 def cadar(x):
+    """page 14"""
     return car(cdr(car(x)))
 
 
+def _list(*atoms):
+    """page 14"""
+    result = NIL
+    for atom in reversed(atoms):
+        result = cons(atom, result)
+    return result
+
+
 def append(x, y):
+    """section 3d1(again), page 14"""
     if null(x) is T:
         return y
     else:
-        cons(car(x), append(cdr(x), y))
-
-# TODO: assert example
+        return cons(car(x), append(cdr(x), y))
 
 
 def among(x, y):
+    """This predicate is true if the S-expression x occurs among
+    the elements of the list y.
+
+    section 3d2(again), page 14
+    """
     return null(y) is F and (
         equal(x, car(y)) is T or
         among(x, cdr(y)) is T
