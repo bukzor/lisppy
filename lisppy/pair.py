@@ -13,10 +13,11 @@ class Pair(SExpression):
         self.second = second
 
     def __repr__(self):
-        return '(%s · %s)' % (abbrev.first, abbrev.second)
-
-    def __str__(self):
-        return repr(self.abbreviation)
+        result = self.abbreviation
+        if isinstance(result, Pair):
+            return '(%s · %s)' % (result.first, result.second)
+        else:
+            return repr(result)
 
     def __iter__(self):
         yield self.first

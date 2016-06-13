@@ -1,11 +1,12 @@
 from lisppy.atom import Atom
 from lisppy.constants import undefined, NIL, T, F
 from lisppy.functions import(
-    atom, eq, car, cdr, cons, ff, subst, equal, null, list_, append, sublis,
+    atom, eq, car, cdr, cons, ff, subst, equal, null, list_, append, pair,
+    sublis,
 )
 
-A, B, C, X, Y = (
-    Atom('A'), Atom('B'), Atom('C'), Atom('X'), Atom('Y'),
+A, B, C, X, Y, Z, U = (
+    Atom(symbol) for symbol in 'ABCXYZU'
 )
 
 
@@ -33,7 +34,7 @@ def test_cdr():
     "section 3c4, page 11"
     assert cdr(X) is undefined
     assert cdr(cons(X, A)) is A
-    assert cdr(cons(cons(X, A), Y)) is Y
+    assert cdr(cons(X, cons(Y, A))) == cons(Y, A)
 
 
 def test_cons():
@@ -58,7 +59,13 @@ def test_ff():
 
 def test_subst():
     "section 3d2 page 12"
-    assert subst(cons(X, A), B, cons(cons(A, B), C)) == cons(cons(A, cons(X, A)), C)
+    assert subst(
+        cons(X, A),
+        B,
+        cons(cons(A, B), C)
+    ) == (
+        cons(cons(A, cons(X, A)), C)
+    )
 
 
 def test_equal():
@@ -91,6 +98,20 @@ def test_append():
     """section 3d1(again), page 14"""
     assert append(list_(A, B), list_(C, X, Y)) == list_(A, B, C, X, Y)
     assert append(NIL, X) is X
+
+
+def test_pair():
+    assert pair(
+        list_(A, B, C),
+        list_(X, list_(Y, Z), U),
+    ) == (
+        # this isn't quite what's in the paper, but v similar
+        list_(
+            cons(A, X),
+            list_(B, Y, Z),
+            cons(C, U),
+        )
+    )
 
 
 def test_sublis():

@@ -131,33 +131,19 @@ def equal(x, y):
 def null(x):
     """This predicate is useful in dealing with lists.
 
-    section 3d3, page 13
+    section 3d3, page 14
     """
 
     return T if atom(x) is eq(x, NIL) is T else F
 
 
-def subst2(x, y, z):
-    """???"""
-    if atom(z) is T:
-        if eq(y, z) is T:
-            return x
-        else:
-            return z
-    else:
-        return cons(
-            subst2(x, y, car(z)),
-            subst2(x, z, cdr(z)),
-        )
-
-
 def caar(x):
-    """page 14"""
+    """section 3d3, page 14"""
     return car(car(x))
 
 
 def cadar(x):
-    """page 14"""
+    """section 3d3, page 14"""
     return car(cdr(car(x)))
 
 
