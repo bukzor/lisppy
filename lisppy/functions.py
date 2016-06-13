@@ -1,5 +1,5 @@
 from .atom import Atom
-from .lists import SExpression as S, NIL
+from .pair import Pair, NIL
 from .constants import undefined, T, F
 
 
@@ -70,7 +70,7 @@ def cons(x, y):
 
     section 3c5, page 11
     """
-    return S(x, y)
+    return Pair(x, y)
 
 
 def ff(x):
@@ -103,7 +103,7 @@ def subst(x, y, z):
         else:
             return z
     else:
-        return S(
+        return cons(
             subst(x, y, car(z)),
             subst(x, y, cdr(z)),
         )
@@ -145,7 +145,7 @@ def subst2(x, y, z):
         else:
             return z
     else:
-        return S(
+        return cons(
             subst2(x, y, car(z)),
             subst2(x, z, cdr(z)),
         )
@@ -161,11 +161,11 @@ def cadar(x):
     return car(cdr(car(x)))
 
 
-def _list(*atoms):
+def list_(*atoms):
     """page 14"""
     result = NIL
     for atom in reversed(atoms):
-        result = cons(atom, result)
+        result = cons(atom, result)  # pylint:disable=redefined-variable-type
     return result
 
 
@@ -190,6 +190,12 @@ def among(x, y):
 
 
 def pair(x, y):
+    """
+    This function gives the list of pairs of corresponding elements of the lists x and y.
+    (It's just like Python's `zip`.)
+
+    section 3d2(again), page 14
+    """
     if null(x) is null(y) is T:
         return NIL
     elif atom(x) is atom(y) is F:

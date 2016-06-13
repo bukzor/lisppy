@@ -1,7 +1,7 @@
 import pytest
 
 from lisppy.atom import Atom
-from lisppy.lists import S, NIL
+from lisppy.pair import Pair, NIL
 
 m, m1, mn, x = (
     Atom('m'), Atom('m1'), Atom('mn'), Atom('x'),
@@ -9,15 +9,15 @@ m, m1, mn, x = (
 
 
 def test_list():
-    assert [1, 2, 3] == list(S(1, S(2, S(3, NIL))))
+    assert [1, 2, 3] == list(Pair(1, Pair(2, Pair(3, NIL))))
 
 
 @pytest.mark.parametrize(
     "sexp, abbrev",
     (
-        (S(m, NIL), [m]),
-        (S(m1, S(mn, NIL)), [m1, mn]),
-        (S(m1, S(mn, x)), [m1, S(mn, x)]),
+        (Pair(m, NIL), [m]),
+        (Pair(m1, Pair(mn, NIL)), [m1, mn]),
+        (Pair(m1, Pair(mn, x)), Pair(m1, Pair(mn, x))),
     )
 )
 def test_abbrev(sexp, abbrev):

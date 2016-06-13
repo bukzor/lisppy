@@ -1,7 +1,7 @@
-from .misc import getstate
+from .sexpression import SExpression
 
 
-class Atom(object):
+class Atom(SExpression):
     """For atomic symbols, we shall use strings of capital Latin letters and
     digits with single imbedded blanks. (1995 remark: Imbedded blanks could be
     allowed within symbols, because lists were then written with commas between
@@ -17,7 +17,9 @@ class Atom(object):
     sequences of characters is ignored. We assume only that different symbols
     can be distinguished.
 
-    section 3a, page 8
+    ...  Atomic symbols are S-expressions.
+
+    section 3a1, page 8
     """
     def __init__(self, name):
         self.name = name
@@ -27,12 +29,3 @@ class Atom(object):
 
     def __getstate__(self):
         return self.name
-
-    def __eq__(self, other):
-        if isinstance(other, Atom):
-            return getstate(self) == getstate(other)
-        else:
-            return NotImplemented
-
-    def __ne__(self, other):
-        return not self == other

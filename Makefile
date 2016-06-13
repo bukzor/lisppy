@@ -13,5 +13,5 @@ CI: lint test
 test: venv
 	./venv/bin/py.test $(ARGS)
 lint: venv
-	git ls-files '*.py' | xargs ./venv/bin/pylint
 	git ls-files '*.py' | xargs ./venv/bin/flake8
+	git ls-files '*.py' | xargs ./venv/bin/pylint
